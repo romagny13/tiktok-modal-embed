@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TikTok Embed Plugin</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="tiktok-wrapper">
+      <h1>Exemple d'utilisation du plugin TikTok</h1>
+      <div
+        id="tiktok1"
+        class="my-tiktok-embed"
+        data-video-url="https://www.tiktok.com/@shinobiquiz/video/7442692524650597665"
+        data-title="BANKAI🗡 | Best Bleach Soundtracks"
+        data-subtitle="Regarder la vidéo TikTok 🎵"
+      ></div>
+    </div>
+
+    <script src="../src/tiktok-modal-embed.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        window.tiktokEmbed = new TikTokModalEmbed({
+          selector: ".my-tiktok-embed",
+          modalAnimation: true,
+          autoplayOnOpen: true
+        });
+      });
+    </script>
+  </body>
+</html>
