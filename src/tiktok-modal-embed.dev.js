@@ -1,30 +1,6 @@
-function loadTikTokAPI() {
-  return new Promise((resolve, reject) => {
-    if (window.Tiktok && window.Tiktok.Player) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://www.tiktok.com/embed.js";
-    script.onload = () => waitForTikTokAPI(resolve, reject);
-    script.onerror = (err) => reject(err);
-    document.body.appendChild(script);
-  });
-}
-
-function waitForTikTokAPI(resolve, reject) {
-  const checkInterval = setInterval(() => {
-    if (window.Tiktok && window.Tiktok.Player) {
-      clearInterval(checkInterval);
-      resolve();
-    }
-  }, 100);
-}
-
-class TikTokEmbed {
+class TikTokModalEmbed {
   constructor(options = {}) {
-    this.version = "1.0.2";
+    this.version = "1.0.1";
     this._options = {
       modalAnimation: true,
       autoplayOnOpen: true,
@@ -47,13 +23,11 @@ class TikTokEmbed {
     const style = document.createElement("style");
     style.id = "tiktok-embed-styles";
     style.innerHTML = `
-  /* Styles du conteneur principal */
   .tiktok-wrapper {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  /* Styles pour le plugin TikTok */
   .tiktok-embed-wrapper {
     display: inline-block;
     position: relative;
@@ -124,7 +98,6 @@ class TikTokEmbed {
     font-weight: normal;
   }
 
-  /* Modal styles */
   .tiktok-modal {
     display: none;
     position: fixed;
@@ -305,17 +278,8 @@ class TikTokEmbed {
     container.innerHTML = "";
     container.appendChild(embed);
 
-    loadTikTokAPI()
-      .then(() => {
-        // console.log("TikTok script loaded successfully.");
-        // Après avoir chargé le script, appeler la méthode TikTok pour rendre l'élément
-        window.Tiktok.Embed.embedTikTokElements();
-      })
-      .catch((error) =>
-        console.error(
-          "An error occurred while loading the TikTok script:",
-          error
-        )
-      );
+    const script = document.createElement("script");
+    script.src = "https://www.tiktok.com/embed.js";
+    document.body.appendChild(script);
   }
 }
