@@ -1,32 +1,7 @@
-function loadTikTokAPI() {
-  return new Promise((resolve, reject) => {
-    if (window.Tiktok && window.Tiktok.Player) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://www.tiktok.com/embed.js";
-    script.onload = () => waitForTikTokAPI(resolve, reject);
-    script.onerror = (err) => reject(err);
-    document.body.appendChild(script);
-  });
-}
-
-function waitForTikTokAPI(resolve, reject) {
-  const checkInterval = setInterval(() => {
-    if (window.Tiktok && window.Tiktok.Player) {
-      clearInterval(checkInterval);
-      resolve();
-    }
-  }, 100);
-}
-
 class TikTokModalEmbed {
   constructor(options = {}) {
-    this.version = "1.0.0";
+    this.version = "1.0.1";
     this._options = {
-      selector: ".my-tiktok-embed",
       modalAnimation: true,
       autoplayOnOpen: true,
       ...options
@@ -48,13 +23,11 @@ class TikTokModalEmbed {
     const style = document.createElement("style");
     style.id = "tiktok-embed-styles";
     style.innerHTML = `
-  /* Styles du conteneur principal */
   .tiktok-wrapper {
     max-width: 1200px;
     margin: 0 auto;
   }
 
-  /* Styles pour le plugin TikTok */
   .tiktok-embed-wrapper {
     display: inline-block;
     position: relative;
@@ -125,7 +98,6 @@ class TikTokModalEmbed {
     font-weight: normal;
   }
 
-  /* Modal styles */
   .tiktok-modal {
     display: none;
     position: fixed;
@@ -151,11 +123,11 @@ class TikTokModalEmbed {
     padding: 20px;
     border-radius: 12px;
     position: relative;
-    transform: scale(0.7); 
-    transition: transform 0.3s ease; 
+    transform: scale(0.7); /* Commence plus petit */
+    transition: transform 0.3s ease; /* Transition fluide pour la mise à l'échelle */
     max-width: 90vw;
     min-height: 300px; 
-    opacity: 0; 
+    opacity: 0; /* Commence avec une opacité nulle */
   }
 
   .tiktok-modal.active .tiktok-modal-content {
@@ -306,17 +278,8 @@ class TikTokModalEmbed {
     container.innerHTML = "";
     container.appendChild(embed);
 
-    loadTikTokAPI()
-      .then(() => {
-        // console.log("TikTok script loaded successfully.");
-        // Après avoir chargé le script, appeler la méthode TikTok pour rendre l'élément
-        window.Tiktok.Embed.embedTikTokElements();
-      })
-      .catch((error) =>
-        console.error(
-          "An error occurred while loading the TikTok script:",
-          error
-        )
-      );
+    const script = document.createElement("script");
+    script.src = "https://www.tiktok.com/embed.js";
+    document.body.appendChild(script);
   }
 }

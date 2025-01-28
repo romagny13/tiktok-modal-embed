@@ -14,7 +14,6 @@
       <h1>Exemple d'utilisation du plugin TikTok</h1>
       <div
         id="tiktok1"
-        class="my-tiktok-embed"
         data-video-url="https://www.tiktok.com/@shinobiquiz/video/7442692524650597665"
         data-title="BANKAI🗡 | Best Bleach Soundtracks"
         data-subtitle="Regarder la vidéo TikTok 🎵"
@@ -24,8 +23,8 @@
     <script src="../src/tiktok-modal-embed.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        window.tiktokEmbed = new TikTokModalEmbed({
-          selector: ".my-tiktok-embed",
+        new TikTokModalEmbed({
+          selector: "#tiktok1",
           modalAnimation: true,
           autoplayOnOpen: true
         });
