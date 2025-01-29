@@ -24,7 +24,7 @@ function waitForTikTokAPI(resolve, reject) {
 
 class TikTokEmbed {
   constructor(options = {}) {
-    this.version = "1.0.2";
+    this.version = "1.0.3";
     this._options = {
       modalAnimation: true,
       autoplayOnOpen: true,
@@ -42,7 +42,7 @@ class TikTokEmbed {
   }
 
   _addGlobalStyles() {
-    if (document.getElementById("tiktok-embed-styles")) return; // Vérifier si les styles sont déjà présents
+    if (document.getElementById("tiktok-embed-styles")) return;
 
     const style = document.createElement("style");
     style.id = "tiktok-embed-styles";
@@ -72,7 +72,7 @@ class TikTokEmbed {
     border: none;
     font-size: 16px;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Ombre plus douce */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -100,7 +100,7 @@ class TikTokEmbed {
 
   .tiktok-preview-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2); /* Ombre plus marquée au survol */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
   }
 
   .tiktok-preview-button:active {
@@ -120,7 +120,7 @@ class TikTokEmbed {
 
   .tiktok-button-subtitle {
     font-size: 14px;
-    opacity: 0.8; /* Opacité réduite pour un look plus léger */
+    opacity: 0.8;
     font-weight: normal;
   }
 
@@ -145,21 +145,46 @@ class TikTokEmbed {
     opacity: 1;
   }
 
-.tiktok-modal-content {
+  .tiktok-modal-content {
     background: white;
     padding: 20px;
     border-radius: 12px;
     position: relative;
-    transform: scale(0.7); /* Commence plus petit */
-    transition: transform 0.3s ease; /* Transition fluide pour la mise à l'échelle */
-    max-width: 90vw;
-    min-height: 300px; 
-    opacity: 0; /* Commence avec une opacité nulle */
+    transform: scale(0.7);
+    transition: transform 0.3s ease;
+    opacity: 0;
+    width: 90vw; /* Utilise 90% de la largeur du viewport */
+    max-width: 500px; /* Limite la largeur maximale */
+    min-height: 500px;
+    
+    /* Ajustement pour le viewport à 1100px */
+    @media screen and (min-width: 1100px) {
+      width: 450px; /* Taille fixe pour les grands écrans */
+    }
+    
+    /* Ajustement pour les très petits écrans */
+    @media screen and (max-width: 480px) {
+      width: 95vw;
+      padding: 15px;
+    }
+  }
+
+  /* Ajustement de la taille du conteneur TikTok embed */
+  .tiktok-embed-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .tiktok-embed-container .tiktok-embed {
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
   }
 
   .tiktok-modal.active .tiktok-modal-content {
-    transform: scale(1); /* Restaure à la taille normale */
-    opacity: 1; /* Restaure l'opacité */
+    transform: scale(1);
+    opacity: 1;
   }
 
   @keyframes popin {
@@ -178,7 +203,7 @@ class TikTokEmbed {
   }
 
   .tiktok-modal.active .tiktok-modal-content {
-    animation: popin 0.5s ease-out forwards; /* Application de l'animation */
+    animation: popin 0.5s ease-out forwards;
   }
 
   .tiktok-close-button {
@@ -197,15 +222,28 @@ class TikTokEmbed {
     font-size: 20px;
     color: #333;
     transition: transform 0.2s ease;
+    
+    /* Ajustement pour mobile */
+    @media screen and (max-width: 480px) {
+      top: -50px;
+      right: 50%;
+      transform: translateX(50%);
+    }
   }
 
   .tiktok-close-button:hover {
     transform: rotate(90deg);
+    
+    /* Ajustement pour mobile */
+    @media screen and (max-width: 480px) {
+      transform: translateX(50%) rotate(90deg);
+    }
   }
 `;
     document.head.appendChild(style);
   }
 
+  // Le reste du code reste identique...
   _createInstance(element) {
     const videoUrl = element.dataset.videoUrl;
     const title = element.dataset.title;
@@ -298,7 +336,6 @@ class TikTokEmbed {
     embed.style.maxWidth = "325px";
     embed.style.minWidth = "325px";
 
-    // Créer une section vide requise par TikTok
     const section = document.createElement("section");
     embed.appendChild(section);
 
@@ -307,8 +344,6 @@ class TikTokEmbed {
 
     loadTikTokAPI()
       .then(() => {
-        // console.log("TikTok script loaded successfully.");
-        // Après avoir chargé le script, appeler la méthode TikTok pour rendre l'élément
         window.Tiktok.Embed.embedTikTokElements();
       })
       .catch((error) =>
