@@ -155,7 +155,7 @@ class TikTokEmbed {
     opacity: 0;
     width: 90vw; /* Utilise 90% de la largeur du viewport */
     max-width: 500px; /* Limite la largeur maximale */
-    min-height: 500px;
+    min-height: 300px;
     
     /* Ajustement pour le viewport à 1100px */
     @media screen and (min-width: 1100px) {
