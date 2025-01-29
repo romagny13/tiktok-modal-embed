@@ -24,7 +24,7 @@ function waitForTikTokAPI(resolve, reject) {
 
 class TikTokEmbed {
   constructor(options = {}) {
-    this.version = "1.0.3";
+    this.version = "1.0.5";
     this._options = {
       modalAnimation: true,
       autoplayOnOpen: true,
